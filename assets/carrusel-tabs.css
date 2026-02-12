@@ -1,0 +1,286 @@
+/* =========================
+   VISIBILIDAD DE PANELES
+========================= */
+.tabs-content .tab-content { display: none; }
+.tabs-content .tab-content[active] { display: block; }
+
+/* =========================
+   CONTENEDOR GENERAL
+========================= */
+.carrusel-tabs-container {
+  width: 100%;
+  padding: 24px 24px 12px;
+}
+
+.carrusel-tabs-container tabs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* =========================
+   HEADER: Tabs + "Ver más"
+========================= */
+.tabs__header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 16px;
+}
+
+.tabs__more{
+  font-weight: 700;
+  color:#000;
+  text-decoration:underline;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.tabs__more:hover{ text-decoration: underline; }
+
+/* =========================
+   TABS (como tu imagen/video)
+========================= */
+.tabs-titles {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tabs-titles tab-title {
+ padding: 6px 10px;
+  border: 1px solid #000;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  color: #000;
+  cursor: pointer;
+  user-select: none;
+  background: #fff;
+
+  /* ✅ SUAVIDAD */
+  transition: background-color .22s ease, color .22s ease, border-color .22s ease;
+}
+
+.tabs-titles tab-title[active],
+.tabs-titles tab-title:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+/* =========================
+   CARRUSEL (fila horizontal)
+========================= */
+.tabs-slider-wrap{
+  position: relative;
+}
+
+/* La pista que scrollea */
+.tabs-slider{
+  display:flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 4px 0 16px;
+  -webkit-overflow-scrolling: touch;
+
+  /* Ocultar scrollbar nativa */
+  scrollbar-width: none; /* Firefox */
+}
+.tabs-slider::-webkit-scrollbar{ display:none; }
+
+/* Cada card/slide */
+.tabs-slide{
+  flex: 0 0 auto;
+  width: 280px;                 /* ajustá si querés más grande/chico */
+  scroll-snap-align: start;
+}
+
+/* =========================
+   TARJETA PRODUCTO (simple)
+========================= */
+.tabs-card{
+   display: block;
+  text-decoration: none;
+  color: #000;
+
+  border: 1px solid transparent;   /* importante para que no salte */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tabs-card:hover {
+  border-color: #000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.tabs-card__img{
+  background: #f2f2f2;
+  aspect-ratio: 1 / 1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.tabs-card__img img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+}
+
+.tabs-card__info{
+  padding-top: 10px;
+}
+
+.tabs-card__title{
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.tabs-card__price{
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+/* =========================
+   BOTÓN FLECHA (derecha)
+========================= */
+.tabs-arrow{
+  position:absolute;
+  top: 42%;
+  transform: translateY(-50%);
+  border: 0;
+  background: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  cursor:pointer;
+  box-shadow: 0 2px 14px rgba(0,0,0,.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index: 2;
+}
+
+.tabs-arrow--next{
+  right: 6px;
+}
+
+/* =========================
+   BARRA DE PROGRESO (abajo)
+========================= */
+.tabs-scrollbar{
+  height: 4px;
+  background: #d9d9d9 !important;
+  position: relative !important;
+  width: 100% !important;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.tabs-scrollbar__thumb{
+  position: absolute !important;
+  left: 0;
+  top: 0;
+  bottom: 0;                /* ✅ asegura altura */
+  height: 4px !important;
+  background: #000 !important;
+  min-width: 80px;          /* ✅ si JS no calcula, igual se ve */
+  border-radius: 999px;
+
+  transform: translateX(0px);
+  will-change: transform, width;
+
+  cursor: grab;
+  touch-action: none;
+  pointer-events: auto;
+  
+}
+
+.tabs-scrollbar__thumb:active{
+  cursor: grabbing;
+}
+
+/* =========================
+   RESPONSIVE (móvil)
+========================= */
+@media (max-width: 768px){
+  /* 3 productos visibles en móvil */
+  .tabs-slider{
+    gap: 12px;              /* un poco menos de separación en móvil */
+  }
+
+  .tabs-slide{
+    width: calc((100% - (12px * 2)) / 3);
+    min-width: 160px;       /* evita que quede demasiado chico en pantallas muy angostas */
+  }
+
+  .tabs-arrow{ display: none; } /* swipe en móvil */
+}
+
+
+.tabs-scrollbar {
+  position: relative !important;
+  height: 6px !important;           /* un poquito más alto para verlo claro */
+  background: #d9d9d9 !important;
+  width: 100% !important;
+  overflow: visible !important;
+}
+
+.tabs-scrollbar__thumb {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  height: 100% !important;
+
+  background: #000 !important;
+  min-width: 120px !important;      /* para que se note SIEMPRE */
+  border-radius: 999px !important;
+
+  z-index: 9999 !important;         /* por si algo lo tapa */
+  pointer-events: auto !important;
+
+  transform: translateX(0px);
+  cursor: grab;
+  touch-action: none;
+}
+
+.tabs-scrollbar__thumb:active { cursor: grabbing; }
+
+/* ===== Ancho dinámico según productos (data-count) ===== */
+
+/* Base */
+.tabs-slide { flex: 0 0 auto; }
+
+/* Si el tab dice 4 productos: cards más grandes */
+/* gap del carrusel (tiene que coincidir con el gap del .tabs-slider) */
+.tabs-slider { gap: 16px; }
+
+/* 4 visibles */
+tab-content[data-per-view="4"] .tabs-slide{
+  width: calc((100% - (16px * 3)) / 4);
+}
+
+/* 8 visibles */
+tab-content[data-per-view="8"] .tabs-slide{
+  width: calc((100% - (16px * 7)) / 8);
+}
+
+/* 12 visibles */
+tab-content[data-per-view="12"] .tabs-slide{
+  width: calc((100% - (16px * 11)) / 12);
+}
+
+
+
+

@@ -1,0 +1,231 @@
+{{ 'adidas-banner.css' | asset_url | stylesheet_tag }}
+
+{%- assign desktop_image = section.settings.main_image -%}
+{%- assign mobile_image  = section.settings.mobile_image | default: desktop_image -%}
+
+<picture class="adidas-banner-picture">
+  {%- if mobile_image != blank -%}
+    <source
+      media="(max-width: 749px)"
+      srcset="
+        {{ mobile_image | image_url: width: 375 }} 375w,
+        {{ mobile_image | image_url: width: 550 }} 550w,
+        {{ mobile_image | image_url: width: 750 }} 750w
+      "
+      sizes="100vw"
+    >
+  {%- endif -%}
+
+  {%- if desktop_image != blank -%}
+    {{ desktop_image
+      | image_url: width: 2000
+      | image_tag:
+        widths: '400, 800, 1200, 1600, 2000',
+        sizes: '100vw',
+        class: 'adidas-banner-image',
+        alt: section.settings.title | escape
+    }}
+  {%- endif -%}
+</picture>
+
+<article class="adidas-banner-content
+  {{ section.settings.vertical_align }} {{ section.settings.horizontal_align }}
+  mobile-{{ section.settings.mobile_vertical_align }} mobile-{{ section.settings.mobile_horizontal_align }}
+  "   style="
+    --text-color-desktop: {{ section.settings.text_color_desktop }};
+    --btn-bg-desktop: {{ section.settings.btn_bg_desktop }};
+    --btn-text-desktop: {{ section.settings.btn_text_desktop }};
+    --text-color-mobile: {{ section.settings.text_color_mobile }};
+    --btn-bg-mobile: {{ section.settings.btn_bg_mobile }};
+    --btn-text-mobile: {{ section.settings.btn_text_mobile }};
+  ">
+  {% if section.settings.title != blank %}
+    <h1>{{ section.settings.title }}</h1>
+  {% endif %}
+
+  {% if section.settings.subtitle != blank %}
+    <p>{{ section.settings.subtitle }}</p>
+  {% endif %}
+
+  <div class="adidas-banner-buttons-container">
+    {% if section.settings.cta_text_1 != blank %}
+      <a href="{{ section.settings.cta_url_1 }}">{{ section.settings.cta_text_1 }}</a>
+    {% endif %}
+
+    {% if section.settings.cta_text_2 != blank %}
+      <a href="{{ section.settings.cta_url_2 }}">{{ section.settings.cta_text_2 }}</a>
+    {% endif %}
+
+    {% if section.settings.cta_text_3 != blank %}
+      <a href="{{ section.settings.cta_url_3 }}">{{ section.settings.cta_text_3 }}</a>
+    {% endif %}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Adidas Banner",
+  "class": "adidas-banner-section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Imagen Desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Imagen Mobile"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Banner title",
+      "default": " SALE | NEW STYLES ADDED"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Banner Subtitle",
+      "default": "Enjoy 40% off* hundreds of new styles added to Sale, exclusively online. *Selected styles. T&Cs apply"
+    },
+    {
+      "type": "header",
+      "content": "Banner buttons settings"
+    },
+    {
+      "type": "url",
+      "id": "cta_url_1",
+      "label": "Button link 1"
+    },
+    {
+      "type": "text",
+      "id": "cta_text_1",
+      "label": "Button text 1",
+      "default": "Shop All"
+    },
+    {
+      "type": "url",
+      "id": "cta_url_2",
+      "label": "Button link 2"
+    },
+    {
+      "type": "text",
+      "id": "cta_text_2",
+      "label": "Button text 2",
+      "default": "Shop All"
+    },
+    {
+      "type": "url",
+      "id": "cta_url_3",
+      "label": "Button link 3"
+    },
+    {
+      "type": "text",
+      "id": "cta_text_3",
+      "label": "Button text 3",
+      "default": "Shop All"
+    },
+    {
+      "type": "header",
+      "content": "Content Position (Desktop)"
+    },
+    {
+      "type": "select",
+      "id": "vertical_align",
+      "label": "Vertical Align",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "middle", "label": "Middle" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "select",
+      "id": "horizontal_align",
+      "label": "Horizontal Align",
+      "options": [
+        { "value": "right", "label": "Right" },
+        { "value": "center", "label": "Center" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Content Position (Mobile)"
+    },
+    {
+      "type": "select",
+      "id": "mobile_vertical_align",
+      "label": "Mobile Vertical Align",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "middle", "label": "Middle" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "select",
+      "id": "mobile_horizontal_align",
+      "label": "Mobile Horizontal Align",
+      "options": [
+        { "value": "right", "label": "Right" },
+        { "value": "center", "label": "Center" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "left"
+    },
+    {
+  "type": "header",
+  "content": "Colors (Desktop)"
+    },
+    {
+      "type": "color",
+      "id": "text_color_desktop",
+      "label": "Text color (Desktop)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_desktop",
+      "label": "Button background (Desktop)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_desktop",
+      "label": "Button text (Desktop)",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Colors (Mobile)"
+    },
+    {
+      "type": "color",
+      "id": "text_color_mobile",
+      "label": "Text color (Mobile)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_mobile",
+      "label": "Button background (Mobile)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_mobile",
+      "label": "Button text (Mobile)",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    { "name": "Adidas Banner" }
+  ]
+}
+{% endschema %}

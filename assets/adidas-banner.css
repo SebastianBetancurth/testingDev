@@ -1,0 +1,158 @@
+.adidas-banner-section {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: flex;
+}
+
+.adidas-banner-section .adidas-banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.adidas-banner-section .adidas-banner-content {
+    position: absolute;
+    width: 50%;
+    padding: 15px;
+    color: #fff;
+}
+
+.adidas-banner-section .adidas-banner-content.bottom{
+    bottom: 0;
+}
+.adidas-banner-section .adidas-banner-content.top{
+    top: 0;
+}
+
+.adidas-banner-section .adidas-banner-content.middle{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.adidas-banner-section .adidas-banner-content.left{
+    left: 0;
+    right: auto;
+}
+.adidas-banner-section .adidas-banner-content.right{
+    left: auto;
+    right: 0;
+}
+.adidas-banner-section .adidas-banner-content.center{
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.adidas-banner-section .adidas-banner-content h1{
+    font-family: 'AdihausDIN-Bold';
+    font-size: 40px;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #fff;
+
+}
+
+.adidas-banner-section .adidas-banner-content p {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+}
+
+
+.adidas-banner-section .adidas-banner-content .adidas-banner-buttons-container {
+    display: flex;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.adidas-banner-section .adidas-banner-content .adidas-banner-buttons-container  a {
+    background-color: #fff;
+    color: #000;
+    padding: 5px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+
+.adidas-banner-section .adidas-banner-content.right .adidas-banner-buttons-container{
+    justify-content: end;
+}
+
+.adidas-banner-section .adidas-banner-content.center .adidas-banner-buttons-container{
+     justify-content: center;
+}
+
+
+.adidas-banner-picture { width: 100%; display: block; }
+
+/* MOBILE: usar clases mobile-top/middle/bottom y mobile-left/center/right */
+@media (max-width: 749px) {
+  .adidas-banner-section .adidas-banner-content {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .adidas-banner-section .adidas-banner-content.mobile-top { top: 0; bottom: auto; }
+  .adidas-banner-section .adidas-banner-content.mobile-bottom { bottom: 0; top: auto; }
+  .adidas-banner-section .adidas-banner-content.mobile-middle {
+    top: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .adidas-banner-section .adidas-banner-content.mobile-left { left: 0; right: auto; text-align: left; }
+  .adidas-banner-section .adidas-banner-content.mobile-right { left: auto; right: 0; text-align: right; }
+  .adidas-banner-section .adidas-banner-content.mobile-center { left: 0; right: 0; margin: auto; text-align: center; }
+
+  .adidas-banner-section .adidas-banner-content.mobile-right .adidas-banner-buttons-container { justify-content: flex-end; }
+  .adidas-banner-section .adidas-banner-content.mobile-center .adidas-banner-buttons-container { justify-content: center; }
+}
+
+/* ===== Colores por dispositivo usando variables ===== */
+
+/* Desktop default */
+.adidas-banner-section .adidas-banner-content{
+  color: var(--text-color-desktop, #fff);
+}
+
+.adidas-banner-section .adidas-banner-content h1,
+.adidas-banner-section .adidas-banner-content p{
+  color: var(--text-color-desktop, #fff);
+}
+
+/* Botones desktop */
+.adidas-banner-section .adidas-banner-content .adidas-banner-buttons-container a{
+  background-color: var(--btn-bg-desktop, #fff);
+  color: var(--btn-text-desktop, #000);
+  border: 1px solid transparent;
+  transition: border-color .18s ease, transform .18s ease;
+}
+
+/* Hover: borde negro bien visible */
+.adidas-banner-section .adidas-banner-content .adidas-banner-buttons-container a:hover{
+  border-color: #000;
+  transform: translateY(-1px);
+}
+
+/* Mobile overrides */
+@media (max-width: 749px){
+  .adidas-banner-section .adidas-banner-content{
+    color: var(--text-color-mobile, #fff);
+  }
+
+  .adidas-banner-section .adidas-banner-content h1,
+  .adidas-banner-section .adidas-banner-content p{
+    color: var(--text-color-mobile, #fff);
+  }
+
+  .adidas-banner-section .adidas-banner-content .adidas-banner-buttons-container a{
+    background-color: var(--btn-bg-mobile, #fff);
+    color: var(--btn-text-mobile, #000);
+  }
+}

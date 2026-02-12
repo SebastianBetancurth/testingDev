@@ -1,0 +1,112 @@
+{{ 'carrusel-tabs.css' | asset_url | stylesheet_tag }}
+
+<tabs-container class="tabs" data-section-id="{{ section.id }}">
+  <div class="tabs__header">
+    <div class="tabs-titles" role="tablist" aria-label="Colecciones">
+      {%- assign tab_i = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.settings.tab_title != blank and block.settings.tab_collection != blank -%}
+          {%- assign tab_i = tab_i | plus: 1 -%}
+          <tab-title
+            class="tab-title"
+            index="{{ tab_i }}"
+            role="tab"
+            aria-selected="{% if tab_i == 1 %}true{% else %}false{% endif %}"
+            {% if tab_i == 1 %}active{% endif %}
+            {{ block.shopify_attributes }}
+          >
+            {{ block.settings.tab_title }}
+          </tab-title>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} Opcional: link "Ver más" como en el video {%- endcomment -%}
+    <a class="tabs__more" href="#" data-more-link>Ver más</a>
+  </div>
+
+  <div class="tabs-content">
+    {%- assign content_i = 0 -%}
+    {%- for block in section.blocks -%}
+      {%- assign col = block.settings.tab_collection -%}
+      {%- if block.settings.tab_title != blank and col != blank -%}
+        {%- assign content_i = content_i | plus: 1 -%}
+
+        <tab-content 
+          class="tab-content"
+          index="{{ content_i }}"
+          role="tabpanel"
+          data-per-view="{{ block.settings.products_per_view | default: 4 }}"
+          {% if content_i == 1 %}active{% endif %}
+        >
+          <div class="tabs-slider-wrap">
+            <div class="tabs-slider" data-slider>
+              {%- for product in col.products -%}
+                <div class="tabs-slide">
+                  {%- comment -%}
+                    Si tu tema tiene snippet de producto, usalo:
+                    render 'card-product', card_product: product, ...
+                  {%- endcomment -%}
+
+                  <a class="tabs-card" href="{{ product.url }}">
+                    <div class="tabs-card__img">
+                      {% if product.featured_image %}
+                        {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy' }}
+                      {% endif %}
+                    </div>
+                    <div class="tabs-card__info">
+                      <div class="tabs-card__title">{{ product.title }}</div>
+                      <div class="tabs-card__price">{{ product.price | money }}</div>
+                    </div>
+                  </a>
+                </div>
+              {%- endfor -%}
+            </div>
+
+            <button class="tabs-arrow tabs-arrow--next" type="button" aria-label="Siguiente" data-next>
+              →
+            </button>
+
+            <div class="tabs-scrollbar" data-scrollbar>
+              <div class="tabs-scrollbar__thumb" data-thumb></div>
+            </div>
+          </div>
+        </tab-content>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</tabs-container>
+
+{% schema %}
+{
+    "name": "Carrusel Tabs",
+    "class": "carrusel-tabs-container",
+    "tag": "section",
+    "settings": [
+        
+        ],
+    "blocks": [
+        {
+            "type": "carrusel-tab",
+             "name": "Carrusel Tab",
+             "settings": [
+                {
+                    "type": "text",
+                    "id": "tab_title",                      
+                    "label": "Tab Title"                                                                                
+                },
+                {
+                    "type": "collection",
+                    "id": "tab_collection",                                                                
+                    "label": "Tab Collection"
+                }                                                                                                                
+             ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Carrusel Tabs"
+        }
+    ]
+}
+{% endschema %}
