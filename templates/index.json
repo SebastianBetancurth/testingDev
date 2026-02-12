@@ -30,9 +30,9 @@
         "text_color_desktop": "#ffffff",
         "btn_bg_desktop": "#ffffff",
         "btn_text_desktop": "#000000",
-        "text_color_mobile": "#ffffff",
-        "btn_bg_mobile": "#ffffff",
-        "btn_text_mobile": "#000000"
+        "text_color_mobile": "#94bf14",
+        "btn_bg_mobile": "#f3f3f3",
+        "btn_text_mobile": "#334fb4"
       }
     },
     "carrusel_tabs_zpEMPB": {
