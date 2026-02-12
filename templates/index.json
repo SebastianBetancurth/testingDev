@@ -9,24 +9,81 @@
  */
 {
   "sections": {
- 
+    "adidas_banner_zjmPEp": {
+      "type": "adidas-banner",
+      "name": "Adidas Banner",
+      "settings": {
+        "main_image": "shopify://shop_images/global_ss26_badbo_originals_ss26.jpg",
+        "mobile_image": "shopify://shop_images/homepage_reducida.webp",
+        "title": "SALE | NEW STYLES ADDED",
+        "subtitle": "Enjoy 40% off* hundreds of new styles added to Sale, exclusively online. *Selected styles. T&Cs apply",
+        "cta_url_1": "",
+        "cta_text_1": "Shop All",
+        "cta_url_2": "",
+        "cta_text_2": "Shop All",
+        "cta_url_3": "",
+        "cta_text_3": "Shop All",
+        "vertical_align": "bottom",
+        "horizontal_align": "left",
+        "mobile_vertical_align": "bottom",
+        "mobile_horizontal_align": "left",
+        "text_color_desktop": "#ffffff",
+        "btn_bg_desktop": "#ffffff",
+        "btn_text_desktop": "#000000",
+        "text_color_mobile": "#ffffff",
+        "btn_bg_mobile": "#ffffff",
+        "btn_text_mobile": "#000000"
+      }
+    },
+    "carrusel_tabs_zpEMPB": {
+      "type": "carrusel-tabs",
+      "blocks": {
+        "carrusel_tab_fHpP6g": {
+          "type": "carrusel-tab",
+          "settings": {
+            "tab_title": "Trending",
+            "tab_collection": "hydrogen"
+          }
+        },
+        "carrusel_tab_ac8Nna": {
+          "type": "carrusel-tab",
+          "settings": {
+            "tab_title": "Campus",
+            "tab_collection": "frontpage"
+          }
+        },
+        "carrusel_tab_EkcryQ": {
+          "type": "carrusel-tab",
+          "settings": {
+            "tab_title": "Originals",
+            "tab_collection": "automated-collection"
+          }
+        }
+      },
+      "block_order": [
+        "carrusel_tab_fHpP6g",
+        "carrusel_tab_ac8Nna",
+        "carrusel_tab_EkcryQ"
+      ],
+      "name": "Carrusel Tabs",
+      "settings": {}
+    },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
+        "collection": "all",
+        "products_to_show": 8,
         "title": "Featured products",
         "heading_size": "h2",
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
         "columns_desktop": 4,
-        "color_scheme": "scheme-1",
+        "enable_desktop_slider": false,
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
+        "color_scheme": "scheme-1",
         "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
@@ -34,13 +91,15 @@
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
+        "swipe_on_mobile": false,
         "padding_top": 44,
         "padding_bottom": 36
       }
     }
   },
   "order": [
-   
+    "adidas_banner_zjmPEp",
+    "carrusel_tabs_zpEMPB",
     "featured_collection"
   ]
 }
