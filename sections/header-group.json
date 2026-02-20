@@ -37,6 +37,35 @@
     },
     "header": {
       "type": "header",
+      "blocks": {
+        "mega_menu_CcE7mT": {
+          "type": "mega_menu",
+          "settings": {
+            "parent_handle": "calzado",
+            "columns_count": 6,
+            "col1_heading": "asdasd",
+            "col1_menu": "customer-account-main-menu",
+            "col2_heading": "",
+            "col2_menu": "",
+            "col3_heading": "",
+            "col3_menu": "",
+            "col4_heading": "",
+            "col4_menu": "",
+            "col5_heading": "",
+            "col5_menu": "",
+            "col6_heading": "",
+            "col6_menu": "",
+            "enable_promo": true,
+            "promo_heading": "",
+            "promo_text": "",
+            "promo_link": "",
+            "promo_button_label": ""
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_CcE7mT"
+      ],
       "settings": {
         "logo_position": "middle-left",
         "mobile_logo_position": "center",
@@ -47,6 +76,8 @@
         "color_scheme": "scheme-1",
         "menu_color_scheme": "scheme-1",
         "enable_country_selector": true,
+        "enable_search_pill": true,
+        "search_pill_placeholder": "BÚSQUEDA",
         "enable_language_selector": true,
         "enable_customer_avatar": true,
         "margin_bottom": 0,
