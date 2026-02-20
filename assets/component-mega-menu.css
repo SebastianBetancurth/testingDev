@@ -81,7 +81,412 @@
 .mega-menu .mega-menu__list--condensed {
   display: block;
 }
-
+.mega-custom__link:hover
 .mega-menu__list--condensed .mega-menu__link {
   font-weight: normal;
 }
+
+/* ===== Adidas Mega Menu Custom (settings-based) ===== */
+.mega-custom__grid{
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 48px;
+  align-items: start;
+}
+
+.mega-custom__cols{
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.mega-custom__title{
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.mega-custom__links{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.mega-custom__link{
+  color: rgba(var(--color-foreground), .78);
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.mega-custom__link:hover{
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.mega-custom__promoWrap{
+  border-left: 1px solid rgba(var(--color-foreground), .12);
+  padding-left: 24px;
+}
+
+.mega-custom__promo{
+  display: block;
+  text-decoration: none;
+  color: rgb(var(--color-foreground));
+}
+
+.mega-custom__promo-img{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.mega-custom__promo-heading{
+  margin-top: 14px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.mega-custom__promo-text{
+  margin-top: 8px;
+  font-size: 13px;
+  color: rgba(var(--color-foreground), .78);
+}
+
+/* Responsivo: si tu logo está top-center o el page-width es chico, baja columnas */
+@media screen and (max-width: 1200px){
+  .mega-custom__cols{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mega-custom__grid{ grid-template-columns: 1fr; }
+  .mega-custom__promoWrap{ border-left: 0; padding-left: 0; margin-top: 18px; }
+}
+
+
+/* ===== Header: centrar el menú (estilo Adidas) ===== */
+@media screen and (min-width: 990px) {
+  /* Header con logo a la izquierda */
+  .header--middle-left {
+    grid-template-columns: auto 1fr auto; /* logo | menu | icons */
+  }
+
+  .header--middle-left .header__inline-menu {
+    justify-self: center; /* centro real */
+  }
+
+  /* Que el UL quede centrado y no “arranque” a la izquierda */
+  .header--middle-left .header__inline-menu .list-menu--inline {
+    justify-content: center;
+    width: max-content;
+    margin: 0 auto;
+  }
+}
+
+/* ===== Underline estilo Adidas ===== */
+@media screen and (min-width: 990px) {
+  .header__menu-item {
+    position: relative;
+  }
+
+  /* Quitamos underline clásico */
+  .header__menu-item:hover,
+  .header__menu-item:focus,
+  .header__menu-item:focus-visible {
+    text-decoration: none !important;
+  }
+
+  /* Barrita */
+  .header__menu-item > span {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px; /* espacio para la línea */
+  }
+
+  .header__menu-item > span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;          /* “más abajo” */
+    height: 3px;          /* “más gruesita” */
+    background: currentColor;
+    opacity: 0;
+    transform: scaleX(0.6);
+    transform-origin: center;
+    transition: opacity .15s ease, transform .15s ease;
+  }
+
+  /* Hover */
+  details.mega-menu > summary.header__menu-item:hover > span::after,
+  a.header__menu-item:hover > span::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  /* Active (cuando estás en esa sección) */
+  .header__active-menu-item::after {
+    opacity: 1 !important;
+    transform: scaleX(1) !important;
+  }
+}
+
+/* ===== Kill Dawn underline (dejar solo barra custom) ===== */
+@media screen and (min-width: 990px) {
+  /* Dawn pone underline por text-decoration / text-underline-offset en varios lugares */
+  .header__menu-item,
+  .header__menu-item span,
+  .header__active-menu-item,
+  .header__menu-item:hover,
+  .header__menu-item:hover span {
+    text-decoration: none !important;
+    text-underline-offset: initial !important;
+    text-decoration-thickness: initial !important;
+  }
+
+  /* Si Dawn aplica "border-bottom" o similar (según versión/custom) */
+  .header__active-menu-item {
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Nuestra barra gruesa */
+  .header__menu-item {
+    position: relative;
+  }
+
+  .header__menu-item > span {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 12px; /* espacio para la barra */
+  }
+
+  .header__menu-item > span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;      /* bajita */
+    height: 3px;      /* gruesa */
+    background: currentColor;
+    opacity: 0;
+    transform: scaleX(0.65);
+    transform-origin: center;
+    transition: opacity .15s ease, transform .15s ease;
+  }
+
+  /* Hover */
+  details.mega-menu > summary.header__menu-item:hover > span::after,
+  a.header__menu-item:hover > span::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  /* Active (solo el que tenga la clase) */
+  .header__menu-item > .header__active-menu-item::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* ===== Search pill estilo Adidas ===== */
+@media screen and (min-width: 990px) {
+  /* contenedor del search en header */
+  .header__search {
+    width: 360px; /* ajustá si querés más largo */
+    max-width: 40vw;
+  }
+
+  /* el botón/trigger del search (Dawn usa un botón con icono) */
+  .header__search .search-modal__toggle,
+  .header__search .search-modal__toggle:hover {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 999px;
+    background: rgba(var(--color-foreground), 0.06);
+    border: 0;
+  }
+
+  /* icono */
+  .header__search .search-modal__toggle .svg-wrapper {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* texto “BÚSQUEDA” */
+  .header__search .search-modal__toggle .search-modal__content {
+    display: flex;
+    align-items: center;
+  }
+
+  .header__search .search-modal__toggle .search-modal__content span,
+  .header__search .search-modal__toggle .search-modal__content {
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: rgba(var(--color-foreground), 0.85);
+  }
+
+  /* evitar subrayados o estilos raros */
+  .header__search .search-modal__toggle {
+    text-decoration: none !important;
+  }
+}
+
+/* En pantallas chicas, dejalo normal (o lo ajustamos luego) */
+/* ===== Search pill (input directo) estilo Adidas ===== */
+@media screen and (min-width: 990px) {
+  .header__search-pill-wrapper {
+    display: flex;
+    align-items: center;
+    margin-right: 14px; /* espacio antes de icons */
+  }
+
+  .header__search-pill {
+    display: flex;
+    align-items: center;
+    width: 420px;          /* ajustable */
+    max-width: 40vw;
+    height: 44px;
+    border-radius: 999px;
+    background: rgba(var(--color-foreground), 0.06);
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .header__search-pill-icon {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .header__search-pill-icon .svg-wrapper {
+    width: 18px;
+    height: 18px;
+  }
+
+  .header__search-pill-input {
+    flex: 1;
+    border: 0;
+    background: transparent;
+    outline: none;
+    box-shadow: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground));
+    padding: 0;
+  }
+
+  .header__search-pill-input::placeholder {
+    color: rgba(var(--color-foreground), 0.85);
+    opacity: 1;
+  }
+
+  /* Evitar estilos default de inputs en Dawn */
+  .header__search-pill-input::-webkit-search-decoration,
+  .header__search-pill-input::-webkit-search-cancel-button,
+  .header__search-pill-input::-webkit-search-results-button,
+  .header__search-pill-input::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+  }
+
+  /* Hover suave como Adidas */
+  .header__search-pill:hover {
+    background: rgba(var(--color-foreground), 0.08);
+  }
+}
+
+
+/* ===== Search pill: ancho pro (no aplastar logo) ===== */
+@media screen and (min-width: 990px) {
+  .header__search-pill-wrapper {
+    margin-right: 12px;
+    flex: 0 0 auto;
+  }
+
+  .header__search-pill {
+           width: 256px;
+        max-width: 160px;
+        height: 32px;
+        padding: 0 12px;
+        /* margin-left: -42px; */
+        margin-right: -30px;
+  }
+
+  /* Si la pantalla achica, el pill reduce solo */
+  @media screen and (max-width: 1200px) {
+    .header__search-pill {
+      width: 260px;
+      max-width: 260px;
+    }
+  }
+
+  @media screen and (max-width: 1100px) {
+    .header__search-pill {
+      width: 220px;
+      max-width: 220px;
+    }
+  }
+
+  /* El logo no se encoge */
+  .header__heading-logo-wrapper {
+    flex: 0 0 auto;
+  }
+}
+
+
+/* ===== Header icons: ordenar buscador + iconos sin romper logo ===== */
+@media screen and (min-width: 990px) {
+  .header__icons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    min-width: 260px; /* evita que colapse */
+  }
+
+  /* el pill se alinea a la izquierda dentro del área de iconos */
+  .header__search-pill-wrapper {
+    order: -1;
+  }
+}
+@media screen and (min-width: 990px) {
+  .header__heading {
+    white-space: nowrap;
+  }
+  .header__heading-link {
+    white-space: nowrap;
+  }
+}
+
+
+/* ===== Fix: que el texto no se salga del search pill ===== */
+.header__search-pill {
+  overflow: hidden;              /* corta todo lo que se salga */
+}
+
+.header__search-pill-input {
+  min-width: 0;                  /* CLAVE en flex para que pueda achicarse */
+  width: 100%;
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;       /* ... cuando se pasa */
+  white-space: nowrap;           /* una sola línea */
+}
+
+/* Si el icono está dentro del pill, evitamos que se encoja */
+.header__search-pill-icon {
+  flex: 0 0 auto;
+}
+

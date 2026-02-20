@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- endif -%}
 
-{%- if section.settings.menu_type_desktop == 'mega' -%}
+{%- if section.settings.menu_type_desktop == 'mega' or section.settings.menu_type_desktop == 'mega_custom' -%}
   <link rel="stylesheet" href="{{ 'component-mega-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- endif -%}
 
@@ -101,6 +101,10 @@
 {%- endstyle -%}
 
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
+{%- if section.settings.menu_type_desktop == 'mega_custom' -%}
+  <script src="{{ 'header-mega-hover.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
 
 {%- liquid
   for block in section.blocks
@@ -138,12 +142,13 @@
   -%}
   <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
     {%- liquid
-      if section.settings.menu != blank
-        render 'header-drawer'
-      endif
+                if section.settings.menu != blank 
+            render 'header-drawer' 
+          endif 
 
-      if section.settings.logo_position == 'top-center' or section.settings.menu == blank
-        render 'header-search', input_id: 'Search-In-Modal-1'
+
+              if section.settings.logo_position == 'top-center' or section.settings.menu == blank
+                render 'header-search', input_id: 'Search-In-Modal-1'
       endif
     -%}
 
@@ -184,11 +189,14 @@
       if section.settings.menu != blank
         if section.settings.menu_type_desktop == 'dropdown'
           render 'header-dropdown-menu'
-        elsif section.settings.menu_type_desktop != 'drawer'
+        elsif section.settings.menu_type_desktop == 'mega_custom'
+          render 'header-mega-menu-custom'
+        elsif section.settings.menu_type_desktop == 'mega'
           render 'header-mega-menu'
         endif
       endif
     %}
+
 
     {%- if section.settings.logo_position == 'middle-center' -%}
       {%- if request.page_type == 'index' -%}
@@ -247,7 +255,26 @@
           </localization-form>
         {%- endif -%}
       </div>
-      {% render 'header-search', input_id: 'Search-In-Modal' %}
+            {% if section.settings.enable_search_pill %}
+        <div class="header__search-pill-wrapper small-hide">
+          <form action="{{ routes.search_url }}" method="get" role="search" class="header__search-pill" autocomplete="off">
+            <input type="hidden" name="type" value="product">
+            <button type="submit" class="header__search-pill-icon" aria-label="{{ 'general.search.search' | t }}">
+              <span class="svg-wrapper">{{ 'icon-search.svg' | inline_asset_content }}</span>
+            </button>
+
+            <input
+              class="header__search-pill-input"
+              type="search"
+              name="q"
+              placeholder="{{ section.settings.search_pill_placeholder | escape }}"
+              aria-label="{{ 'general.search.search' | t }}"
+            >
+          </form>
+        </div>
+      {% endif %}
+
+    
 
       {%- if shop.customer_accounts_enabled -%}
         <a
@@ -284,6 +311,7 @@
             {% render block %}
         {%- endcase -%}
       {%- endfor -%}
+
 
       <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
         {% if cart == empty %}
@@ -470,7 +498,7 @@
 {
   "name": "t:sections.header.name",
   "class": "section-header",
-  "max_blocks": 3,
+  "max_blocks": 50,
   "settings": [
     {
       "type": "select",
@@ -530,6 +558,9 @@
         {
           "value": "mega",
           "label": "t:sections.header.settings.menu_type_desktop.options__2.label"
+        },
+        { "value": "mega_custom", 
+          "label": "Mega menu (PRO - Customizable)" 
         },
         {
           "value": "drawer",
@@ -597,6 +628,23 @@
       "info": "t:sections.header.settings.enable_country_selector.info"
     },
     {
+      "type": "header",
+      "content": "Search pill (Adidas)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search_pill",
+      "label": "Activar buscador pill (input directo)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_pill_placeholder",
+      "label": "Placeholder buscador",
+      "default": "BÚSQUEDA"
+    },
+
+    {
       "type": "checkbox",
       "id": "enable_language_selector",
       "default": true,
@@ -650,6 +698,77 @@
     }
   ],
   "blocks": [
+    {
+      "type": "mega_menu",
+      "name": "Mega menu (PRO)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "parent_handle",
+          "label": "Handle del item principal",
+          "info": "Ej: si el item del menú se llama 'Niños' y su handle es 'ninos', poné: ninos"
+        },
+        {
+          "type": "range",
+          "id": "columns_count",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "label": "Cantidad de columnas",
+          "default": 6
+        },
+
+        { "type": "text", "id": "col1_heading", "label": "Columna 1 - Título" },
+        { "type": "link_list", "id": "col1_menu", "label": "Columna 1 - Menú" },
+
+        { "type": "text", "id": "col2_heading", "label": "Columna 2 - Título" },
+        { "type": "link_list", "id": "col2_menu", "label": "Columna 2 - Menú" },
+
+        { "type": "text", "id": "col3_heading", "label": "Columna 3 - Título" },
+        { "type": "link_list", "id": "col3_menu", "label": "Columna 3 - Menú" },
+
+        { "type": "text", "id": "col4_heading", "label": "Columna 4 - Título" },
+        { "type": "link_list", "id": "col4_menu", "label": "Columna 4 - Menú" },
+
+        { "type": "text", "id": "col5_heading", "label": "Columna 5 - Título" },
+        { "type": "link_list", "id": "col5_menu", "label": "Columna 5 - Menú" },
+
+        { "type": "text", "id": "col6_heading", "label": "Columna 6 - Título" },
+        { "type": "link_list", "id": "col6_menu", "label": "Columna 6 - Menú" },
+
+        { "type": "header", "content": "Promo (derecha)" },
+        { "type": "checkbox", "id": "enable_promo", "label": "Activar promo", "default": true },
+        { "type": "image_picker", "id": "promo_image", "label": "Imagen promo" },
+        { "type": "text", "id": "promo_heading", "label": "Título promo" },
+        { "type": "text", "id": "promo_text", "label": "Texto promo" },
+        { "type": "url", "id": "promo_link", "label": "Link promo" },
+        { "type": "text", "id": "promo_button_label", "label": "Texto tipo botón (opcional)" }
+      ]
+    },
+    {
+      "type": "menu_style",
+      "name": "Menu item style (PRO)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "parent_handle",
+          "label": "Handle del item principal",
+          "info": "Ej: outlet, ninos, hombre, mujer..."
+        },
+        {
+          "type": "checkbox",
+          "id": "bold",
+          "label": "Negrita",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Color del texto",
+          "default": "#000000"
+     }
+    ]
+    },
     {
       "type": "@app"
     }

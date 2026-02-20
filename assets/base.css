@@ -3595,3 +3595,226 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+/* ===== Header: alinear todo perfectamente en una línea ===== */
+@media screen and (min-width: 990px) {
+
+  /* El contenedor principal del header */
+  .header {
+    align-items: center !important;
+  }
+
+  /* Logo */
+  .header__heading {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Menú central */
+  .header__inline-menu {
+    display: flex;
+    align-items: center;
+  }
+
+  .header__inline-menu .list-menu--inline {
+    align-items: center;
+  }
+
+  /* Buscador pill */
+  .header__search-pill-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Iconos (usuario / carrito) */
+  .header__icons {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Asegurar que los iconos SVG estén centrados */
+  .header__icons .svg-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}
+@media screen and (min-width: 990px) {
+  .header__menu-item > span {
+    padding-bottom: 8px; /* antes era 12px */
+  }
+}
+/* ===== FIX DEFINITIVO: todo en la misma línea ===== */
+@media screen and (min-width: 990px) {
+
+  /* 1) Fuerza la altura visual del header y centra TODO */
+  .section-header .header {
+    min-height: 64px;                 /* podés ajustar 60-72 */
+    align-items: center !important;
+  }
+
+  /* 2) Normaliza bloques internos para que TODOS centren igual */
+  .section-header .header__heading,
+  .section-header .header__inline-menu,
+  .section-header .header__icons,
+  .section-header .header__search-pill-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    height: 64px;                      /* mismo valor que min-height */
+  }
+
+  /* 3) El UL también centrado */
+  .section-header .header__inline-menu .list-menu--inline {
+    align-items: center !important;
+  }
+
+  /* 4) El problema real: padding/line-height del item del menú */
+  .section-header summary.header__menu-item,
+  .section-header a.header__menu-item {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    height: 64px;                      /* misma altura */
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  /* 5) Nuestra barrita: NO debe mover el baseline */
+  .section-header .header__menu-item > span {
+    padding-bottom: 0 !important;      /* clave: no empujar */
+  }
+
+  /* Barrita abajo pero sin empujar */
+  .section-header .header__menu-item > span::after {
+    bottom: -8px;                      /* la baja visualmente */
+  }
+
+  /* 6) Alinea iconos (cuentas/carrito) perfecto */
+  .section-header .header__icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    height: 64px;
+  }
+}
+
+/* ===== Mobile drawer: look Adidas ===== */
+.menu-drawer__menu-item {
+  font-weight: 600;
+}
+
+.menu-drawer__heading {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: 12px;
+  opacity: .8;
+  pointer-events: none;
+}
+
+.menu-drawer__divider {
+  height: 1px;
+  background: rgba(var(--color-foreground), .12);
+  margin: 10px 0;
+}
+/* Bold menu mobile */
+.menu-bold {
+  font-weight: 700 !important;
+}
+/* ===== Mobile drawer: chevron siempre a la derecha ===== */
+.menu-item--with-chevron {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px;
+}
+
+.menu-item__label {
+  flex: 1 1 auto;
+}
+
+.menu-item__chevron {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Rotar el caret para que sea ">" (Dawn caret apunta abajo) */
+.menu-item__chevron svg {
+  transform: rotate(-90deg);
+}
+/* ===== Drawer header (logo + X) ===== */
+.menu-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(var(--color-foreground), .12);
+}
+
+.menu-drawer__logo img {
+  max-height: 26px;
+  width: auto;
+  display: block;
+}
+/* Drawer: flecha derecha estilo Adidas */
+.menu-item--with-chevron{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap: 12px;
+}
+.menu-item__label{ flex:1 1 auto; }
+.menu-item__chevron{ flex:0 0 auto; }
+.menu-item__chevron svg{ transform: rotate(-90deg); }
+
+/* ===== FIX DEFINITIVO: topbar drawer (logo chico + X limpia) ===== */
+.menu-drawer__topbar{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  padding: 12px 16px !important;
+  border-bottom: 1px solid rgba(var(--color-foreground), .12) !important;
+}
+
+/* LOGO dentro del drawer: evitar que se haga gigante */
+.menu-drawer__topbar-logo{
+  display:flex !important;
+  align-items:center !important;
+  max-width: 160px !important;
+}
+
+.menu-drawer__topbar-logo img{
+  max-height: 22px !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 160px !important;
+  object-fit: contain !important;
+  display:block !important;
+}
+
+/* Botón X: sin borde, sin caja, alineado */
+.menu-drawer__topbar-close{
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 6px !important;
+  width: 36px !important;
+  height: 36px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  cursor:pointer !important;
+}
+
+.menu-drawer__topbar-close .svg-wrapper{
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.menu-drawer__topbar-close svg{
+  width: 18px !important;
+  height: 18px !important;
+}
+
+

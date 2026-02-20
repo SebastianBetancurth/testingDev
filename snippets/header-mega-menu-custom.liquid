@@ -1,0 +1,165 @@
+{% comment %}
+  Custom Mega Menu (settings-based) for Dawn header.
+  - Many mega menus configurable via section blocks (type: mega_menu)
+  - Each mega menu: up to 6 columns (each column is a link_list) + 1 promo
+  - Assigned to a top-level menu item by handle
+{% endcomment %}
+
+<nav class="header__inline-menu">
+  <ul class="list-menu list-menu--inline" role="list">
+    {%- for link in section.settings.menu.links -%}
+      {%- assign mega_block = nil -%}
+      {%- assign link_key = link.handle | downcase -%}
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'mega_menu' -%}
+          {%- assign target = block.settings.parent_handle | downcase | strip -%}
+          {%- if target == link_key and target != blank -%}
+            {%- assign mega_block = block -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      <li>
+        {%- if mega_block != nil -%}
+          <header-menu>
+            <details id="Details-HeaderMenu-Custom-{{ forloop.index }}" class="mega-menu">
+              <summary
+                id="HeaderMenu-Custom-{{ link.handle }}"
+                class="header__menu-item list-menu__item link focus-inset"
+              >
+                {%- assign style_block = nil -%}
+                    {%- for b in section.blocks -%}
+                    {%- if b.type == 'menu_style' -%}
+                        {%- assign t = b.settings.parent_handle | downcase | strip -%}
+                        {%- if t == link_key and t != blank -%}
+                        {%- assign style_block = b -%}
+                        {%- break -%}
+                        {%- endif -%}
+                    {%- endif -%}
+                    {%- endfor -%}
+
+                    {%- capture inline_style -%}
+                    {%- if style_block != nil and style_block.settings.color != blank -%}
+                        color: {{ style_block.settings.color }};
+                    {%- endif -%}
+                    {%- if style_block != nil and style_block.settings.bold -%}
+                        font-weight: 700;
+                    {%- endif -%}
+                    {%- endcapture -%}
+
+                    <span
+                    {% if link.child_active %}class="header__active-menu-item"{% endif %}
+                    {% if inline_style != blank %}style="{{ inline_style | strip }}"{% endif %}
+                    >
+                    {{- link.title | escape -}}
+                    </span>
+                
+              </summary>
+
+              <div
+                id="MegaMenu-Custom-Content-{{ forloop.index }}"
+                class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup"
+                tabindex="-1"
+              >
+                <div class="page-width">
+                  <div class="mega-custom__grid">
+
+                    {%- comment -%} LEFT: Columns {%- endcomment -%}
+                    <div class="mega-custom__cols">
+                      {%- assign cols = mega_block.settings.columns_count | default: 6 -%}
+
+                      {%- for i in (1..6) -%}
+                        {%- if i <= cols -%}
+                          {%- capture menu_id -%}col{{ i }}_menu{%- endcapture -%}
+                          {%- capture heading_id -%}col{{ i }}_heading{%- endcapture -%}
+
+                          {%- assign col_menu = mega_block.settings[menu_id] -%}
+                          {%- assign col_heading = mega_block.settings[heading_id] -%}
+
+                          {%- if col_menu != blank and col_menu.links != blank -%}
+                            <div class="mega-custom__col">
+                              <div class="mega-custom__title">
+                                {%- if col_heading != blank -%}
+                                  {{ col_heading | escape }}
+                                {%- else -%}
+                                  {{ col_menu.title | escape }}
+                                {%- endif -%}
+                              </div>
+
+                              <ul class="mega-custom__links" role="list">
+                                {%- for item in col_menu.links -%}
+                                  <li>
+                                    <a class="mega-custom__link" href="{{ item.url }}">
+                                      {{ item.title | escape }}
+                                    </a>
+                                  </li>
+                                {%- endfor -%}
+                              </ul>
+                            </div>
+                          {%- endif -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+
+                    {%- comment -%} RIGHT: Promo {%- endcomment -%}
+                    {%- if mega_block.settings.enable_promo -%}
+                      <div class="mega-custom__promoWrap">
+                        {%- assign promo_url = mega_block.settings.promo_link | default: link.url -%}
+                        <a class="mega-custom__promo" href="{{ promo_url }}">
+                          {%- if mega_block.settings.promo_image != blank -%}
+                            {{
+                              mega_block.settings.promo_image
+                              | image_url: width: 900
+                              | image_tag:
+                                class: 'mega-custom__promo-img',
+                                loading: 'lazy',
+                                alt: mega_block.settings.promo_heading | default: link.title | escape
+                            }}
+                          {%- endif -%}
+
+                          {%- if mega_block.settings.promo_heading != blank -%}
+                            <div class="mega-custom__promo-heading">
+                              {{ mega_block.settings.promo_heading | escape }}
+                            </div>
+                          {%- endif -%}
+
+                          {%- if mega_block.settings.promo_text != blank -%}
+                            <div class="mega-custom__promo-text">
+                              {{ mega_block.settings.promo_text | escape }}
+                            </div>
+                          {%- endif -%}
+
+                          {%- if mega_block.settings.promo_button_label != blank -%}
+                            <div class="mega-custom__promo-heading" style="margin-top: 10px;">
+                              {{ mega_block.settings.promo_button_label | escape }}
+                            </div>
+                          {%- endif -%}
+                        </a>
+                      </div>
+                    {%- endif -%}
+
+                  </div>
+                </div>
+              </div>
+            </details>
+          </header-menu>
+
+        {%- else -%}
+          {%- comment -%} Fallback: si no hay block configurado, se comporta como link normal {%- endcomment -%}
+          <a
+            id="HeaderMenu-{{ link.handle }}"
+            href="{{ link.url }}"
+            class="header__menu-item list-menu__item link link--text focus-inset"
+            {% if link.current %}aria-current="page"{% endif %}
+          >
+            <span{% if link.current %} class="header__active-menu-item"{% endif %}>
+              {{- link.title | escape -}}
+            </span>
+          </a>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>

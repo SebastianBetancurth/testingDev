@@ -1,0 +1,182 @@
+{% comment %}
+  Header Drawer Custom (Mobile) - uses mega_menu blocks as submenus.
+  - If a top-level link has a mega_menu block assigned (by handle), we render a "panel" submenu using the configured column linklists.
+  - Otherwise fallback to default navigation children.
+{% endcomment %}
+
+<header-drawer data-breakpoint="tablet">
+  <details id="Details-menu-drawer-container" class="menu-drawer-container">
+    <summary class="header__icon header__icon--menu header__icon--summary link focus-inset" aria-label="Menu">
+      <span class="svg-wrapper">{{ 'icon-hamburger.svg' | inline_asset_content }}</span>
+    </summary>
+
+    <div id="menu-drawer" class="menu-drawer motion-reduce" tabindex="-1">
+      <div class="menu-drawer__inner-container">
+        <div class="menu-drawer__topbar">
+            <a href="{{ routes.root_url }}" class="menu-drawer__topbar-logo link link--text focus-inset">
+                {%- if settings.logo != blank -%}
+                {{ settings.logo | image_url: width: 180 | image_tag: loading: 'lazy', alt: shop.name }}
+                {%- else -%}
+                {{ shop.name }}
+                {%- endif -%}
+            </a>
+
+            <button type="button" class="menu-drawer__topbar-close" aria-label="Close menu" data-drawer-close>
+                <span class="svg-wrapper">{{ 'icon-close.svg' | inline_asset_content }}</span>
+            </button>
+        </div>
+        <div class="menu-drawer__navigation-container">
+
+          <nav class="menu-drawer__navigation">
+            <ul class="menu-drawer__menu has-submenu list-menu" role="list">
+              {%- for link in section.settings.menu.links -%}
+                        {%- assign link_key = link.handle | downcase -%}
+                        {%- assign mega_block = nil -%}
+
+                        {%- for block in section.blocks -%}
+                            {%- if block.type == 'mega_menu' -%}
+                            {%- assign target = block.settings.parent_handle | downcase | strip -%}
+                            {%- if target == link_key and target != blank -%}
+                                {%- assign mega_block = block -%}
+                                {%- break -%}
+                            {%- endif -%}
+                            {%- endif -%}
+                        {%- endfor -%}
+
+                        {%- comment -%} ===== MENU STYLE (OUTLET ROJO/BOLD) ===== {%- endcomment -%}
+                        {%- assign style_block = nil -%}
+                        {%- for b in section.blocks -%}
+                            {%- if b.type == 'menu_style' -%}
+                            {%- assign target_handle = b.settings.parent_handle | downcase | strip -%}
+                            {%- if target_handle == link_key and target_handle != blank -%}
+                                {%- assign style_block = b -%}
+                                {%- break -%}
+                            {%- endif -%}
+                            {%- endif -%}
+                        {%- endfor -%}
+
+                        {%- capture inline_style -%}
+                            {%- if style_block and style_block.settings.color != blank -%}
+                            color: {{ style_block.settings.color }};
+                            {%- endif -%}
+                            {%- if style_block and style_block.settings.bold -%}
+                            font-weight: 700;
+                            {%- endif -%}
+                        {%- endcapture -%}
+
+
+                <li>
+                  {%- if mega_block != nil -%}
+                    <details id="Details-menu-drawer-{{ link.handle }}">
+                  <summary class="menu-drawer__menu-item list-menu__item link focus-inset menu-item--with-chevron">
+                        <span class="menu-item__label"{% if inline_style != blank %} style="{{ inline_style | strip }}"{% endif %}>
+                            {{ link.title | escape }}
+                        </span>
+                        <span class="svg-wrapper menu-item__chevron">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+                    </summary>
+
+
+                      <div class="menu-drawer__submenu has-submenu gradient motion-reduce" tabindex="-1">
+                        <div class="menu-drawer__inner-submenu">
+                          <button class="menu-drawer__close-button link link--text focus-inset" type="button">
+                            <span class="svg-wrapper">{{ 'icon-arrow.svg' | inline_asset_content }}</span>
+                            {{ link.title | escape }}
+                          </button>
+
+                          <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
+                            {%- assign cols = mega_block.settings.columns_count | default: 6 -%}
+
+                            {%- for i in (1..6) -%}
+                              {%- if i <= cols -%}
+                                {%- capture menu_id -%}col{{ i }}_menu{%- endcapture -%}
+                                {%- capture heading_id -%}col{{ i }}_heading{%- endcapture -%}
+
+                                {%- assign col_menu = mega_block.settings[menu_id] -%}
+                                {%- assign col_heading = mega_block.settings[heading_id] -%}
+
+                                {%- if col_menu != blank and col_menu.links != blank -%}
+                                  {%- if col_heading != blank -%}
+                                    <li class="menu-drawer__menu-item list-menu__item menu-drawer__heading">
+                                      {{ col_heading | escape }}
+                                    </li>
+                                  {%- endif -%}
+
+                                  {%- for item in col_menu.links -%}
+                                    <li>
+                                      <a class="menu-drawer__menu-item list-menu__item link link--text focus-inset" href="{{ item.url }}">
+                                        {{ item.title | escape }}
+                                      </a>
+                                    </li>
+                                  {%- endfor -%}
+                                {%- endif -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+
+                            {%- comment -%} “Todo el …” abajo (usa el link principal) {%- endcomment -%}
+                            <li class="menu-drawer__divider"></li>
+                            <li>
+                              <a class="menu-drawer__menu-item list-menu__item link link--text focus-inset" href="{{ link.url }}">
+                                {{ 'Ver todo' | escape }} {{ link.title | escape }}
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </details>
+
+                  {%- elsif link.links != blank -%}
+                    {%- comment -%} fallback: comportamiento normal Dawn si tiene hijos en Navigation {%- endcomment -%}
+                    <details id="Details-menu-drawer-{{ link.handle }}">
+                      <summary class="menu-drawer__menu-item list-menu__item link focus-inset menu-item--with-chevron">
+                            <span class="menu-item__label">{{ link.title | escape }}</span>
+                            <span class="svg-wrapper menu-item__chevron">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+                    </summary>
+
+
+
+                      <div class="menu-drawer__submenu has-submenu gradient motion-reduce" tabindex="-1">
+                        <div class="menu-drawer__inner-submenu">
+                          <button class="menu-drawer__close-button link link--text focus-inset" type="button">
+                            <span class="svg-wrapper">{{ 'icon-arrow.svg' | inline_asset_content }}</span>
+                            {{ link.title | escape }}
+                          </button>
+
+                          <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
+                            {%- for childlink in link.links -%}
+                              <li>
+                                <a class="menu-drawer__menu-item list-menu__item link link--text focus-inset" href="{{ childlink.url }}">
+                                  {{ childlink.title | escape }}
+                                </a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                      </div>
+                    </details>
+
+                  {%- else -%}
+                    <a class="menu-drawer__menu-item list-menu__item link link--text focus-inset menu-item--with-chevron" href="{{ link.url }}">
+                        <span class="menu-item__label">{{ link.title | escape }}</span>
+                        <span class="svg-wrapper menu-item__chevron">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+                    </a>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+
+        </div>
+      </div>
+    </div>
+  </details>
+  <script>
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('[data-drawer-close]');
+    if (!btn) return;
+
+    const container = document.getElementById('Details-menu-drawer-container');
+    if (container) container.removeAttribute('open');
+  });
+</script>
+
+</header-drawer>
